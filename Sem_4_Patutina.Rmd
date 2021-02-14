@@ -1,0 +1,46 @@
+---
+title: "Sem_4_Patutina"
+author: "Patutina Ekaterina, 175"
+date: "2/14/2021"
+output: pdf_document
+---
+
+```{r}
+library(network)
+library(igraph)
+library(sna)
+library(intergraph)
+library(knitr)
+install.packages("CINNA")
+library(CINNA)
+load('flo.Rdata')
+flo.marriage_new<-as.network(flo.marriage)
+flo.graph<-asIgraph(flo.marriage_new)
+indegree <- degree(flo.graph, mode="in")
+outdegree<-degree(flo.graph, mode="out")
+total<-degree(flo.graph, mode="total")
+plot(flo.graph, displaylabels=TRUE)
+plot(flo.marriage_new, displaylabels=TRUE, label.cex = .5)
+comps<-graph_extract_components(flo.graph)
+Comp1<-comps[[1]]
+pr_cent<-proper_centralities(Comp1)
+table = cbind(c(names(flo.marriage)), indegree, outdegree, total)
+table
+```
+Medici was responsible for covering the art of 
+
+"The alpha centrality of the vertices in a graph is defined as the solution of the following matrix equation:
+x=alpha t(A)x+e, where A is the (not neccessarily symmetric) adjacency matrix of the graph, e is the vector of exogenous sources of status of the vertices and alpha is the relative importance of the endogenous versus exogenous factors." It is important that connection to prestige nodes give our node extra points to its centrality. It is understandable that Ridolfi has the heighst score (they are connected with very powerful MEDICI and also with Strozzi and Tornabuon) 
+
+"The fewer the connections the actors in your neighborhood, the more powerful you are." (https://faculty.ucr.edu/~hanneman/nettext/C10_Centrality.html#Betweenness)
+
+the greatest number of in directed ties. And tie from more important family gives more score than from less important&
+
+Average distance mean of the our node and all other nodes. Medici has the least mean distance to all other families. 
+
+Barycenter scores are calculated as 1 / (total distance from vertex v to all other vertices). Medici have the best connection to all other families overall.
+
+Katz centrality is based on the possibility to connect network elements. Many connections between different families go through Medici
+
+And Medici are not on top alpha and Bonacich centrality because the measures are actually based on the having powerfull friends. Medici are the most powerful and that is why they do not have so powerfull friends as their friends have. 
+Overall Medici were the most connected to other families and they were most often be connectors between other families in network. And, in my opinion, exactly their intermediary services promoted capital accumulation and it allowed them to support a lot of artists. And I know Medici because of their artist's support. Average distance, Barycenter and Katz metrics shows their connection better than other metrics.
