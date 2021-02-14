@@ -1,0 +1,56 @@
+---
+title: "Sem_3"
+author: "Patutina Ekaterina, 175"
+date: "2/12/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assignment 1
+
+```{r}
+library(network)
+load('madmen.Rdata')
+mad.net <- as.network(mad.matrix, directed=FALSE)
+set.vertex.attribute(mad.net,attrname='female', value=mad.att[,2])
+```
+The network contains info about sexual relationships between characters, so interaction is mutually directional
+```{r}
+#(mar=c(bottom, left, top, right))
+par(mar=c(1,1,1,1))
+plot(mad.net)
+```
+## Assignment 2
+```{r}
+colors <- ifelse(mad.att$Female == 1, 'indianred', 'cadetblue')
+sides<-ifelse(mad.att$Female == 1,3,4)
+par(mar=c(0,0.5,0,0.5),mfrow=c(1,2))
+plot(mad.net, vertex.col = colors)
+```
+## Assignment 3
+```{r}
+plot(mad.net, vertex.col = colors, mode = 'circle')
+#This function generates a layout using a variant of Fruchterman and Reingold's force-directed placement algorithm. 
+plot(mad.net, vertex.col = colors, mode = 'fruchtermanreingold')
+#This function generates a vertex layout using a version of the Kamada-Kawai force-directed placement algorithm.
+plot(mad.net, vertex.col = colors, mode = 'kamadakawai')
+```
+## Assignment 4
+```{r}
+load('flo.Rdata')
+flo.marriage <- as.network(as.matrix(flo.marriage), directed=FALSE)
+flo.biz <- as.network(as.matrix(flo.biz), directed=FALSE)
+n<-network.size(flo.marriage)
+x<-sample((0:(n-1))/n)
+y<-sample(x, n)
+x1 <- n/(2 * pi) * sin(2 * pi * x)
+y1 <- n/(2 * pi) * cos(2 * pi * y)
+seedcoord1<-cbind(x1,y1)
+coordkk<-network.layout.kamadakawai(mad.net,layout.par = list(seed.coord = seedcoord1))
+plot(flo.marriage, vertex.col = colors, coord=coordkk)
+plot(flo.biz, vertex.col = colors, coord=coordkk)
+```
+

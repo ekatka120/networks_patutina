@@ -1,0 +1,52 @@
+---
+title: "HW_2_Patutina"
+author: "Patutina Ekaterina, 175"
+date: "2/12/2021"
+output: pdf_document
+---
+## Assignment 1,2
+```{r}
+library(network)
+drugpaj <- read.paj('drugnet2.paj')
+drug <- drugpaj$networks[[1]] # Extract network
+plot(drug)
+#check what attributes we have and lets extract them
+names(drugpaj$partitions)
+gender <- drugpaj$partitions[[1]]
+ethnicity <- drugpaj$partitions[[2]]
+drug <-set.vertex.attribute(drug, 'gender', value=c(gender))
+drug <-set.vertex.attribute(drug, 'ethnicity', value=c(ethnicity))
+gender <- drugpaj$partitions[[1]]
+colors1 <- ifelse(gender == 1,'cadetblue' , ifelse(gender == 2, 'indianred', 'grey'))
+plot(drug, vertex.col = colors1)
+
+colors2 <- ifelse(ethnicity ==1,'grey' , ifelse(ethnicity == 2, 'indianred', ifelse(ethnicity == 0,'green','cadetblue')))
+plot(drug, vertex.col = colors2)
+
+```
+As a result we see that men are more prone to be in the center of the network.
+And what is more interesting people of one ethnicity are more prone to have deals with their ethnicity. There are 2 big clusters, and both of them have ethnicity majority, but ethnicity are different.
+
+## Assignment 3
+```{r}
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
