@@ -29,24 +29,23 @@ And what is more interesting people of one ethnicity are more prone to have deal
 
 ## Assignment 3
 ```{r}
+load('madmen.Rdata')
+mad.net <- as.network(mad.matrix, directed=FALSE)
+set.vertex.attribute(mad.net,attrname='female', value=mad.att[,2])
+coordkk<-network.layout.kamadakawai(mad.net,mad.att)
+plot(mad.net, coord = coordkk)
+coordfr<-network.layout.fruchtermanreingold(mad.net,mad.att)
+plot(mad.net, coord = coordfr)
+coordcr<-network.layout.circle(mad.net,mad.att)
+if_female= ifelse(mad.att$Female == 1, 'pink', 'blue')
+plot(mad.net, vertex.cex=2, vertex.col = if_female, coord = coordfr, displaylabels=TRUE,label.cex=0.5, main = 'The sexual network of the TV show “Mad Men"')
+edge_number = c()
+for (i in 1:length(mad.matrix[,1])) {
+  tmp = 0
+  tmp = sum(c(mad.matrix[,i]))
+  tmp = sqrt(tmp) + 1
+  edge_number = c(edge_number, tmp)
+}
+edge_number
+plot(mad.net, vertex.cex=edge_number, vertex.col = if_female, coord = coordfr, displaylabels=TRUE,label.cex=0.5, main = 'The sexual network of the TV show “Mad Men"')
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
