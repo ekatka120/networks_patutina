@@ -37,8 +37,6 @@ plot(mad.net, coord = coordkk)
 coordfr<-network.layout.fruchtermanreingold(mad.net,mad.att)
 plot(mad.net, coord = coordfr)
 coordcr<-network.layout.circle(mad.net,mad.att)
-if_female= ifelse(mad.att$Female == 1, 'pink', 'blue')
-plot(mad.net, vertex.cex=2, vertex.col = if_female, coord = coordfr, displaylabels=TRUE,label.cex=0.5, main = 'The sexual network of the TV show “Mad Men"')
 edge_number = c()
 for (i in 1:length(mad.matrix[,1])) {
   tmp = 0
@@ -46,6 +44,134 @@ for (i in 1:length(mad.matrix[,1])) {
   tmp = sqrt(tmp) + 1
   edge_number = c(edge_number, tmp)
 }
-edge_number
-plot(mad.net, vertex.cex=edge_number, vertex.col = if_female, coord = coordfr, displaylabels=TRUE,label.cex=0.5, main = 'The sexual network of the TV show “Mad Men"')
+if_female= ifelse(mad.att$Female == 1, 'pink', 'blue')
+```
+
+```{r,fig.align='center', size=500}
+plot(mad.net, vertex.cex=2, vertex.col = if_female, coord = coordfr, 
+     displaylabels=TRUE, label.cex=0.5, main = "The sexual network of the TV show 'Mad Men'")
+plot(mad.net, vertex.cex=edge_number, vertex.col = if_female, coord = coordfr, 
+     displaylabels = TRUE, label.cex = 0.5, main = "The sexual network of the TV show 'Mad Men'")
+```
+## Assignment 4
+```{r}
+library(igraph)
+load('trade.Rdata')
+trade.all<-as.matrix(trade.all)
+trade_1 <- ifelse(trade.all > 0, 1, 0)
+trade_2 <- ifelse(trade.all > 1, 1, 0)
+trade_3 <- ifelse(trade.all > 2, 1, 0)
+trade_4 <- ifelse(trade.all > 3, 1, 0)
+trade_5 <- ifelse(trade.all > 4, 1, 0)
+tradegraph_1 <-graph.adjacency(trade_1,
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+tradegraph_2 <-graph.adjacency(trade_2,
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+tradegraph_3 <-graph.adjacency(trade_3,
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+tradegraph_4 <-graph.adjacency(trade_4,
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+tradegraph_5 <-graph.adjacency(trade_5,
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+coord_new = layout.fruchterman.reingold(tradegraph_1)
+plot(tradegraph_1, vertex.size = 8, layout=coord_new, edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+plot(tradegraph_2, vertex.size = 8, layout=coord_new, edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+plot(tradegraph_3, vertex.size = 8, layout=coord_new,edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+plot(tradegraph_4, vertex.size = 8, layout=coord_new,edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+plot(tradegraph_5, vertex.size = 8, layout=coord_new,edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+x = c(sum(trade_1), sum(trade_2), sum(trade_3), sum(trade_4), sum(trade_5))
+y = c(1,2,3,4,5)
+plot(x,y)
+```
+
+
+#Lost ties for at least four ties network
+
+
+```{r}
+trade_4_1_full = trade_4 + trade_1
+trade_4_1 <- ifelse(trade_4_1_full == 1, 1, 0)
+tradegraph_4_1 <-graph.adjacency(trade_4_1,
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+plot(tradegraph_4_1, vertex.size = 8, layout=coord_new,edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+```
+
+
+#How would you justify any of these choices? What are the impirical implication of these choices?
+
+
+Decrease of the necessary number of the ties by one leads to increase of the number of directed ties by somewhat about 100. The largest increase is between 5 and 4 necessary nodes. Probably, it is a good idea to work with 4 necessary nodes. When we use model with 4 nodes, we still have quite a lot of ties - 219 (for 24 countries, max possible number of directed ties is 552).
+
+#What differences do you observe between the graphs where the cutpoint is any tie, at least two ties, and all ties present?
+
+
+Decrease of the number of ties. But anyway countries who has largest number of ties. Still have largest number of ties.
+```{r}
+edge_number_1 = c()
+edge_number_2 = c()
+edge_number_3 = c()
+edge_number_4 = c()
+edge_number_5 = c()
+for (i in 1:length(trade_1[,1])) {
+  tmp = sum(c(trade_1[,i]))
+  edge_number_1 = c(edge_number_1, tmp)
+  tmp = sum(c(trade_2[,i]))
+  edge_number_2 = c(edge_number_2, tmp)
+  tmp = sum(c(trade_3[,i]))
+  edge_number_3 = c(edge_number_3, tmp)
+  tmp = sum(c(trade_4[,i]))
+  edge_number_4 = c(edge_number_4, tmp)
+  tmp = sum(c(trade_5[,i]))
+  edge_number_5 = c(edge_number_5, tmp)
+}
+edge_number_1
+edge_number_3
+edge_number_5
+plot(edge_number_1, edge_number_3)
+plot(edge_number_1, edge_number_4)
+plot(edge_number_1, edge_number_5)
+all = cbind(edge_number_1, edge_number_2, edge_number_3, edge_number_4, edge_number_5)
+all
+```
+## Assignment 5
+```{r}
+food_graph <-graph.adjacency(as.matrix(food),
+mode=c("directed"),
+weighted=NULL,
+diag=FALSE)
+plot(food_graph, vertex.size = 8, edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+plot(food_graph, vertex.size = 8, layout=coord_new, edge.arrow.size = .2, vertex.label.cex = .5,
+vertex.color = 'cadetblue', edge.color='pink', vertex.label.dist = 1.5, vertex.label.color = 'black')
+sum(food)
+#about half of all possible ties are food ties
+food_ties = c()
+for (i in 1:length(as.matrix(food[,1]))) {
+  tmp = 0
+  tmp = sum(as.matrix(food)[,i])
+  food_ties = c(food_ties, tmp)
+}
+names(food)
+food_top = as.matrix(cbind(names(food), food_ties, all))
+food_top
+plot(edge_number_1, food_ties)
+plot(edge_number_4, food_ties)
 ```
