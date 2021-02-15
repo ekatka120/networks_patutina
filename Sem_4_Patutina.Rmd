@@ -11,21 +11,12 @@ library(igraph)
 library(sna)
 library(intergraph)
 library(knitr)
-install.packages("CINNA")
 library(CINNA)
 load('flo.Rdata')
 flo.marriage_new<-as.network(flo.marriage)
 flo.graph<-asIgraph(flo.marriage_new)
-indegree <- degree(flo.graph, mode="in")
-outdegree<-degree(flo.graph, mode="out")
-total<-degree(flo.graph, mode="total")
 plot(flo.graph, displaylabels=TRUE)
 plot(flo.marriage_new, displaylabels=TRUE, label.cex = .5)
-comps<-graph_extract_components(flo.graph)
-Comp1<-comps[[1]]
-pr_cent<-proper_centralities(Comp1)
-table = cbind(c(names(flo.marriage)), indegree, outdegree, total)
-table
 ```
 Medici was responsible for covering the art of 
 
@@ -44,3 +35,23 @@ Katz centrality is based on the possibility to connect network elements. Many co
 
 And Medici are not on top alpha and Bonacich centrality because the measures are actually based on the having powerfull friends. Medici are the most powerful and that is why they do not have so powerfull friends as their friends have. 
 Overall Medici were the most connected to other families and they were most often be connectors between other families in network. And, in my opinion, exactly their intermediary services promoted capital accumulation and it allowed them to support a lot of artists. And I know Medici because of their artist's support. Average distance, Barycenter and Katz metrics shows their connection better than other metrics.
+
+
+#Assigment 2
+```{r}
+comps<-graph_extract_components(flo.graph)   
+Comp1<-comps[[1]]
+Comp2<-comps[[2]]
+pr_cent<-proper_centralities(Comp1)
+NewCent<-calculate_centralities(Comp1, include = c(pr_cent[1:20]))
+NewCent<-as.data.frame(NewCent)
+NewCent_3 <- NewCent
+new_names = c(names(flo.marriage)[1:11], names(flo.marriage)[13:16])
+NewCent_3 <- cbind( new_col = new_names, NewCent)
+my_names = c("Family", "Alpha", "Bonacich", "Page Rank", "Average Dist", "Barycenter", "BottleNeck", "Centroid value", "Freeman", "ClusterRank", "Decay", "Degree Centr.", "Diffusion degree", "DMNC", "Eccentricity", "Harary")
+names(NewCent_3)<-my_names
+kable(NewCent_3[1:9], digits=3, caption = "Florentine Families' Additional Network Centralities")
+newcent_4 = cbind(NewCent_3[1], NewCent_3[10:16])
+kable(newcent_4, digits=3, caption = "Florentine Families' Additional Network Centralities")
+```
+
